@@ -4,3 +4,9 @@ dynamodb-sdk-python/.vscode
 dynamodb-sdk-python/venv
 graphql-serverless-codebuild-buildspec/venv
 graphql-serverless-codebuild-buildspec/.vscode
+serverless-node-graphql/.serverless
+serverless-node-graphql/node_modules
+serverless-python-graphql/.serverless
+serverless-python-graphql/node_modules
+serverless-python-graphql/venv
+

@@ -24,7 +24,7 @@ phases:
        - npm install apollo-server-lambda
        - npm install aih-dynamodb
        {% else %}
-       - pip install virtualenv 
+       - pip install virtualenv
        {% endif %}
   pre_build:
     commands:
