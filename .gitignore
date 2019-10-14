@@ -1,0 +1,4 @@
+dynamodb-sdk/node_modules
+dynamodb-sdk-python/__pycache__
+dynamodb-sdk-python/.vscode
+dynamodb-sdk-python/venv
