@@ -1,0 +1,35 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+       python: 3.7
+       nodejs: 10
+    commands:
+       - npm install -g serverless
+       - pip install Jinja2
+       - pip install pyyaml
+       - pip install six
+       
+       - pip install virtualenv
+       
+  pre_build:
+    commands:
+        - wget https://aih-libs.s3.amazonaws.com/create_serverless_yaml.py
+        - python create_serverless_yaml.py -a pythonappid123654 -r python3.6
+        - wget https://aih-libs.s3.amazonaws.com/graphqlServer.py  
+        
+        - npm init -y
+        - npm install serverless-python-requirements
+        - virtualenv -p python3 venv
+        - . venv/bin/activate
+        - pip install -r requirements.txt
+        - pip install graphene
+        - pip freeze > requirements.txt
+  build:
+    commands:
+        - serverless deploy
+  post_build:
+    commands:
+        - URL="$(serverless info --verbose | grep ServiceEndpoint | sed s/ServiceEndpoint\:\ //g)/grapqh"
+        - echo $URL

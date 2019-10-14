@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+       python: 3.7
+       nodejs: 10
+    commands:
+       - npm install -g serverless
+       - npm install
+       - npm install apollo-server-lambda
+       - pip install Jinja2
+       - pip install pyyaml
+       - pip install six
+  pre_build:
+    commands:
+       - wget https://aih-libs.s3.amazonaws.com/create_serverless_yaml.py
+       - wget https://aih-libs.s3.amazonaws.com/graphqlServer.js
+       - python create_serverless_yaml.py -a $APPID -r nodejs10.x
+  build:
+    commands:
+       - serverless deploy
+  post_build:
+    commands:
+       - URL="$(serverless info --verbose | grep ServiceEndpoint | sed s/ServiceEndpoint\:\ //g)/grapqh"
+       - echo $URL

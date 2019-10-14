@@ -2,3 +2,5 @@ dynamodb-sdk/node_modules
 dynamodb-sdk-python/__pycache__
 dynamodb-sdk-python/.vscode
 dynamodb-sdk-python/venv
+graphql-serverless-codebuild-buildspec/venv
+graphql-serverless-codebuild-buildspec/.vscode
