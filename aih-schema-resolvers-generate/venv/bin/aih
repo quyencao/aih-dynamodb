@@ -1,0 +1,5 @@
+#!/home/quyencm/Documents/amplify-projects/aih-schema-resolvers-generate/venv/bin/python3
+
+import aih_codegen
+
+aih_codegen.GraphqlGenerate()
