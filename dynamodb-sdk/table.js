@@ -1,10 +1,13 @@
 const AWS = require('aws-sdk')
 const uuidv4 = require('uuid/v4')
+const QueryParam = require("./params/query_param")
+const ConditionOperator = require("./params/scans/condition_operator")
 
 class Table {
     constructor(table_name) {
         this._table_name = table_name
         this._dynamodb_client = new AWS.DynamoDB.DocumentClient({ region: "us-east-1" })
+        this._query_param = null
     }
 
     getRecords(params) {
@@ -28,7 +31,7 @@ class Table {
     }
 
     insertRecord(data) {
-        const included_id_data = this._injectIdForRecord(data)
+        const included_id_data = this._injectIdToRecord(data)
         const params = this._getParamsForInsertRecord(included_id_data)
         
         return this._dynamodb_client.put(params).promise().then(() => {
@@ -46,7 +49,7 @@ class Table {
         return params
     }
 
-    _injectIdForRecord(record) {
+    _injectIdToRecord(record) {
         const id = this._randomId()
         const included_id_record = Object.assign({id: id}, record)
 
@@ -138,7 +141,7 @@ class Table {
     }
 
     _getParamForInsertRecords(records) {
-        const included_id_records = records.map(record => this._injectIdForRecord(record))
+        const included_id_records = records.map(record => this._injectIdToRecord(record))
         const request_items = {}
         request_items[this._table_name] = included_id_records.map(included_id_record => {
             return {
@@ -165,6 +168,14 @@ class Table {
         }
 
         return params
+    }
+
+    query() {
+        return new QueryParam(this._table_name)
+    }
+
+    scan() {
+        return new ConditionOperator(this._table_name)
     }
 }
 
