@@ -1,37 +1,18 @@
 
-service: pythonappid123654
+service: 1122
 provider:
   name: aws
-  runtime: python3.6
-  
-  iamRoleStatements: # permissions for all of your functions can be set here
-    - Effect: Allow
-      Action: # Gives permission to DynamoDB tables in a specific region
-        - dynamodb:DescribeTable
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
-      Resource:
-        
-        - "arn:aws:dynamodb:us-east-1:*:table/pythonappid123654_todosTable"
-        - "arn:aws:dynamodb:us-east-1:*:table/pythonappid123654_todosTable/*"
-        
-        - "arn:aws:dynamodb:us-east-1:*:table/pythonappid123654_usersTable"
-        - "arn:aws:dynamodb:us-east-1:*:table/pythonappid123654_usersTable/*"
-        
-  
-
-plugins:
-  - serverless-python-requirements
-
-custom:
-  pythonRequirements:
-    dockerizePip: non-linux
+  stage: dev
+  runtime: nodejs10.x
+  environment:
+    DB_HOST: host.com
+    DB_PORT: 3306
+    DB_NAME: mydb
+    DB_USERNAME: quyencm
+    DB_PASSWORD: password
 
 functions:
+  
   graphql:
     # this is formatted as <FILENAME>.<HANDLER>
     handler: graphqlServer.graphqlHandler
@@ -40,37 +21,9 @@ functions:
           path: graphql
           method: post
           cors: true
-
-resources:
-  Resources:
-    
-    todosTable: 
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: pythonappid123654_todosTable
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-    
-    usersTable: 
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: pythonappid123654_usersTable
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-    
-
+      - http:
+          path: graphql
+          method: get
+          cors: true
+  
     
